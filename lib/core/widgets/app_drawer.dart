@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lizs_sandbox/features/animations/real_time_waveform/presentation/pages/realtime_waveform_page.dart';
+import 'package:lizs_sandbox/features/animations/unit_circle/presentation/pages/unit_circle_page.dart';
 import 'package:lizs_sandbox/features/challenges/presentation/pages/number_to_string_page.dart';
 import 'package:lizs_sandbox/features/challenges/presentation/pages/palindromic_substring_page.dart';
 
@@ -68,6 +69,16 @@ class AppDrawer extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                     builder: (context) => const RealTimeWaveformPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.radar_outlined),
+            title: const Text('Unit Circle Angles'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const UnitCirclePage()),
               );
             },
           ),
