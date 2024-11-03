@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lizs_sandbox/features/animations/real_time_waveform/presentation/pages/realtime_waveform_page.dart';
+import 'package:lizs_sandbox/features/animations/rotating_cube/presentation/pages/rotating_cube_page.dart';
 import 'package:lizs_sandbox/features/animations/unit_circle/presentation/pages/unit_circle_page.dart';
 import 'package:lizs_sandbox/features/challenges/presentation/pages/number_to_string_page.dart';
 import 'package:lizs_sandbox/features/challenges/presentation/pages/palindromic_substring_page.dart';
@@ -79,6 +80,17 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const UnitCirclePage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.check_box_outline_blank),
+            title: const Text('Rotating Cube (Back-Culling)'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RotatingCubePage()),
               );
             },
           ),
