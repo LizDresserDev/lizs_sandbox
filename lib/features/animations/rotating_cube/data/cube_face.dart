@@ -12,13 +12,13 @@ enum FaceDirection { front, back, left, right, top, bottom }
 /// and the indices of its vertices in a vertex list.
 class CubeFace {
   /// Const constructor for CubeFace
-  const CubeFace(
-    this.faceDirection,
-    this.color,
-    this.transform,
-    this.normalVector,
-    this.verticeOffsetIndices,
-  );
+  const CubeFace({
+    required this.faceDirection,
+    required this.color,
+    required this.transformationMatrix,
+    required this.normalVector,
+    required this.verticeOffsetIndices,
+  });
 
   /// The direction this face is facing.
   final FaceDirection faceDirection;
@@ -30,7 +30,7 @@ class CubeFace {
   /// part of the TransformedCube.
   ///
   /// This matrix defines how the face is transformed in 3D space.
-  final Matrix4 transform;
+  final Matrix4 transformationMatrix;
 
   /// The normal vector of the face.
   ///

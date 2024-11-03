@@ -82,62 +82,63 @@ class _RotatingCubePageState extends State<RotatingCubePage>
 
     cubeFaces = [
       CubeFace(
-        FaceDirection.front,
-        Colors.teal,
-        Matrix4.identity()..translate(0.0, 0.0, -halfCubeSideLength),
-        Vector3(0, 0, -1),
-        const [0, 1, 2, 3],
+        faceDirection: FaceDirection.front,
+        color: Colors.teal,
+        transformationMatrix: Matrix4.identity()
+          ..translate(0.0, 0.0, -halfCubeSideLength),
+        normalVector: Vector3(0, 0, -1),
+        verticeOffsetIndices: const [0, 1, 2, 3],
       ), // front
       CubeFace(
-        FaceDirection.back,
-        Colors.red,
-        Matrix4.identity()
+        faceDirection: FaceDirection.back,
+        color: Colors.red,
+        transformationMatrix: Matrix4.identity()
           ..translate(0.0, 0.0, halfCubeSideLength)
           ..rotateY(-pi),
-        Vector3(0, 0, 1),
-        const [4, 5, 6, 7],
+        normalVector: Vector3(0, 0, 1),
+        verticeOffsetIndices: const [4, 5, 6, 7],
       ), // back
       CubeFace(
-        FaceDirection.left,
-        Colors.amber,
-        Matrix4.identity()
+        faceDirection: FaceDirection.left,
+        color: Colors.amber,
+        transformationMatrix: Matrix4.identity()
           // ignore: avoid_redundant_argument_values
           ..translate(halfCubeSideLength, 0.0, 0.0)
           ..rotateY(-pi / 2),
-        Vector3(1, 0, 0),
-        const [1, 2, 6, 5],
+        normalVector: Vector3(1, 0, 0),
+        verticeOffsetIndices: const [1, 2, 6, 5],
       ), // left
 
       CubeFace(
-        FaceDirection.right,
-        Colors.purple,
-        Matrix4.identity()
+        faceDirection: FaceDirection.right,
+        color: Colors.purple,
+        transformationMatrix: Matrix4.identity()
           // ignore: avoid_redundant_argument_values
           ..translate(-halfCubeSideLength, 0.0, 0.0)
           ..rotateY(pi / 2),
-        Vector3(-1, 0, 0),
-        const [0, 3, 7, 4],
+        normalVector: Vector3(-1, 0, 0),
+        verticeOffsetIndices: const [0, 3, 7, 4],
       ), // right
       CubeFace(
-        FaceDirection.bottom,
-        Colors.grey[800]!,
-        Matrix4.identity()
+        faceDirection: FaceDirection.bottom,
+        color: Colors.grey[800]!,
+        transformationMatrix: Matrix4.identity()
           // ignore: avoid_redundant_argument_values
           ..translate(0.0, halfCubeSideLength, 0.0)
           ..rotateX(pi / 2),
-        Vector3(0, 1, 0),
-        const [0, 1, 5, 4],
+        normalVector: Vector3(0, 1, 0),
+        verticeOffsetIndices: const [0, 1, 5, 4],
       ), // bottom
 
       CubeFace(
-        FaceDirection.top,
-        Colors.grey[300]!,
-        Matrix4.identity()
+        faceDirection: FaceDirection.top,
+        color: Colors.grey[300]!,
+        transformationMatrix: Matrix4.identity()
           // ignore: avoid_redundant_argument_values
           ..translate(0.0, -halfCubeSideLength, 0.0)
           ..rotateX(-pi / 2),
-        Vector3(0, -1, 0),
-        const [2, 3, 7, 6],
+        normalVector: Vector3(0, -1, 0),
+        verticeOffsetIndices: const [2, 3, 7, 6],
       ), // top
     ];
   }
@@ -174,23 +175,14 @@ class _RotatingCubePageState extends State<RotatingCubePage>
     required double? newRz,
   }) {
     setState(() {
-      if (newRx != null) {
-        _rx = newRx.clamp(-2 * pi, 2 * pi);
-      }
-
-      if (newRy != null) {
-        _ry = newRy.clamp(-2 * pi, 2 * pi);
-      }
-
-      if (newRz != null) {
-        _rz = newRz.clamp(-2 * pi, 2 * pi);
-      }
+      _rx = newRx?.clamp(-2 * pi, 2 * pi) ?? _rx;
+      _ry = newRy?.clamp(-2 * pi, 2 * pi) ?? _ry;
+      _rz = newRz?.clamp(-2 * pi, 2 * pi) ?? _rz;
 
       transformCubeTransform = Matrix4.identity()
         ..rotateX(_rx)
         ..rotateY(_ry)
         ..rotateZ(_rz);
-
       drawnCubeTransform = Matrix4.identity()
         ..rotateX(-_rx)
         ..rotateY(_ry)
@@ -198,6 +190,7 @@ class _RotatingCubePageState extends State<RotatingCubePage>
 
       // Clear visible cube faces
       visibleCubeFaces.clear();
+
       // Iterate through cubeFaces to determine which should
       // now be facing the viewer given the rotations
       for (final face in cubeFaces) {
@@ -318,22 +311,25 @@ class _RotatingCubePageState extends State<RotatingCubePage>
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          key: RotatingCubeWidgetKeys.radiansText,
-                          '''Radians: ${_rx.toStringAsFixed(2)}, ${_ry.toStringAsFixed(2)}, ${_rz.toStringAsFixed(2)}''',
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            key: RotatingCubeWidgetKeys.radiansText,
+                            '''Radians: ${_rx.toStringAsFixed(2)}, ${_ry.toStringAsFixed(2)}, ${_rz.toStringAsFixed(2)}''',
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          key: RotatingCubeWidgetKeys.degreesText,
-                          '''Degrees: ${degrees(_rx).toStringAsFixed(1)}°, ${degrees(_ry).toStringAsFixed(1)}°, ${degrees(_rz).toStringAsFixed(1)}°''',
+                        Expanded(
+                          child: Text(
+                            key: RotatingCubeWidgetKeys.degreesText,
+                            '''Degrees: ${degrees(_rx).toStringAsFixed(1)}°, ${degrees(_ry).toStringAsFixed(1)}°, ${degrees(_rz).toStringAsFixed(1)}°''',
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),

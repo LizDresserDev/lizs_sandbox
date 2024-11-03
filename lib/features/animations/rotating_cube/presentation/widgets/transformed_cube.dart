@@ -29,7 +29,7 @@ class TransformedCube extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<Widget> cubeFaceList = visibleCubeFaces.map((face) {
       return Transform(
-        transform: face.transform,
+        transform: face.transformationMatrix,
         alignment: Alignment.center,
         child: Container(
           width: cubeSideLength,
